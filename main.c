@@ -12,10 +12,6 @@
 #include "task3_blink_green_led_fsm.h"
 #include "task4_start_blink_sequence_fsm.h"
 
-
-//Comparator Defines
-#define AC_OUTPUT 0x10
-
 volatile uint8_t emitter_detected_count = 0;
 volatile uint8_t set_blink_state = 0;
 
@@ -33,9 +29,6 @@ ISR(AC0_AC_vect)
     if (emitter_on)
         emitter_detected_count++;
 
-    //Turn Yellow LED on (testing only - remove)
-    PORTA_OUTSET = INTERRUPT_OUT;
-    
     //Clear AC ISR Flag
     AC0.STATUS = AC_CMP_bm;
 }
@@ -92,6 +85,9 @@ int main(void)
     PORTA.DIRSET = IR_EMITTER;
     PORTA.DIRSET = GREEN_LED;
     PORTA.DIRSET = RED_LED;
+     
+    //PORTB PC ISR Setup
+    PORTB.PIN2CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc; 
     
     //Initialize I2C Slave
     I2CS_init();
@@ -99,7 +95,6 @@ int main(void)
     AC_init();
     //Initialize real time clock (~1s TOF) for I2C bus timeouts
     RTC_init();
-
 
     /* SET UP TASKS */
     uint32_t SM1_t = TASK1TIME;
@@ -157,11 +152,7 @@ int main(void)
     
     //Enable global interrupts
     sei();
-    
-    
-    //if (AC0.STATUS & AC_OUTPUT)
-    //PORTA_OUTCLR = INTERRUPT_OUT;
-    
+
     uint16_t i = 0;
     while (1) 
     {

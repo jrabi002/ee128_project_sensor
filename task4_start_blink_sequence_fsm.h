@@ -4,6 +4,7 @@
 #include "proximity_sensor.h"
 
 uint8_t blink_on = 0;
+uint8_t blink_off_counter = BLINK_SEQ_TURNOFF;
 
 enum SM4_States { SM4_wait, SM4_blinking_on, SM4_blinking_off};
 int SMTick4(int state) {
@@ -16,7 +17,11 @@ int SMTick4(int state) {
         break;
 
         case SM4_blinking_on:
-        state = SM4_blinking_off;
+        blink_off_counter--;
+        if (blink_off_counter == 0)
+            state = SM4_blinking_off;
+        else 
+            state = SM4_blinking_on;
         break;
 
         case SM4_blinking_off:
@@ -39,6 +44,8 @@ int SMTick4(int state) {
         
         case SM4_blinking_off:
         set_blink_state = 0;
+        blink_on = 0;
+        blink_off_counter = BLINK_SEQ_TURNOFF;
         break;
 
         default:

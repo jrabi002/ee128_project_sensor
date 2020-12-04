@@ -8,7 +8,7 @@
 unsigned long _avr_timer_M = 1; // Start count from here, down to 0. Default 1ms
 unsigned long _avr_timer_cntcurr = 0; // Current internal count of 1ms ticks
 volatile unsigned char TimerFlag = 0;
-//volatile uint16_t timeout_cnt;
+volatile uint16_t timeout_cnt;
 
 void TimerSet(unsigned long M) {
     _avr_timer_M = M;
@@ -72,6 +72,13 @@ void RTC_timer_on(void)
     RTC.CLKSEL = RTC_CLKSEL_INT32K_gc;
     RTC.PITINTCTRL = RTC_PI_bm; //Enable RTC Periodic Interrupts
     RTC.PITCTRLA = RTC_PERIOD_CYC32_gc | RTC_PITEN_bm;
+}
+
+//RTC periodic Interrupt ~1ms
+ISR(RTC_PIT_vect)
+{
+    timeout_cnt++;                      // increment timeout counter
+    RTC.PITINTFLAGS = RTC_PI_bm;        // clear interrupt flag
 }
 
 #endif /* TIMER_H_ */

@@ -3,22 +3,13 @@
 
 volatile uint8_t i2c_data;        // data byte sent by slave or received from master
 uint8_t  num_bytes = 0;              // number of bytes sent/received in transaction
-volatile uint16_t timeout_cnt = 0;
-//volatile uint8_t blink_status = 0;
-volatile uint8_t sensor_status = 0;
-
-//RTC periodic Interrupt ~1ms
-ISR(RTC_PIT_vect)
-{
-    timeout_cnt++;                      // increment timeout counter
-    RTC.PITINTFLAGS = RTC_PI_bm;        // clear interrupt flag
-}
 
 void I2CS_init(void)                                            // initialize slave
 {
     //Clear and setup SCL
     VPORTB.DIR |= (1 << SCL);
     VPORTB.OUT &= ~(1 << SCL);
+    
     volatile uint8_t *port_pin_ctrl = ((uint8_t *)&PORTB + 0x10 + SCL);
     *port_pin_ctrl |= PORT_PULLUPEN_bm;
     *port_pin_ctrl = ((uint8_t *)&PORTB + 0x10 + SCL);

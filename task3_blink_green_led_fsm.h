@@ -19,7 +19,10 @@ int SMTick3(int state) {
         break;
 
         case SM3_LED_on:
-        state = SM3_LED_off;
+        if (blink_on)
+            state = SM3_LED_off;
+        else
+            state = SM3_reset;
         break;
 
         case SM3_LED_off:

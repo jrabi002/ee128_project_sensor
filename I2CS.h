@@ -1,4 +1,4 @@
-#define F_CPU 20000000UL
+#define F_CPU 10000000UL
 
 #ifndef I2CS_H_
 #define I2CS_H_
