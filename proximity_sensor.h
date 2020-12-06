@@ -19,8 +19,10 @@
 //PORTA Defines
 #define RED_LED PIN1_bm
 #define GREEN_LED PIN2_bm
-#define IR_EMITTER PIN3_bm
 #define INTERRUPT_OUT PIN4_bm
+
+//PORTB Defines
+#define IR_EMITTER PIN3_bm
 
 //The number of times the emitter should be pulsed every pulse sequence
 //This define is used to set the value of 'pulse_count'

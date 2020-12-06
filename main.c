@@ -82,9 +82,11 @@ int main(void)
     
     //PORTA Enable Outputs
     PORTA.DIRSET = INTERRUPT_OUT;
-    PORTA.DIRSET = IR_EMITTER;
     PORTA.DIRSET = GREEN_LED;
     PORTA.DIRSET = RED_LED;
+    
+    //PORTB Enable Outputs
+    PORTB.DIRSET = IR_EMITTER;
      
     //PORTB PC ISR Setup
     PORTB.PIN2CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc; 

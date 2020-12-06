@@ -50,12 +50,12 @@ int SMTick1(int state) {
         break;
 
         case SM1_emitter_on:
-        PORTA_OUTSET = IR_EMITTER;
+        PORTB_OUTSET = IR_EMITTER;
         emitter_on = 1;
         break;
 
         case SM1_emitter_off:
-        PORTA_OUTCLR = IR_EMITTER;
+        PORTB_OUTCLR = IR_EMITTER;
         emitter_on = 0;
         pulse_count--;
         break;
