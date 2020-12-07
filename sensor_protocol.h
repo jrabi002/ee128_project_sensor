@@ -30,6 +30,6 @@ struct sensor_packet_struct
 
 void clear_sensor_packet(void);
 void parse_sensor_packet(void);
-
+void start_parse(void);
 
 #endif /* SENSOR_PROTOCOL_H_ */

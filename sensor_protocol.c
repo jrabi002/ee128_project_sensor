@@ -31,3 +31,16 @@ void parse_sensor_packet(void)
         sensor_packet.parsed = 1;
     }
 }
+
+void start_parse(void)
+{
+    parse_sensor_packet();
+    if (sensor_packet.reg == REG_BLINK_CMD)
+    {
+        if (sensor_packet.cmd == CMD_BLINK_ON)
+            set_blink_state = 1;
+        else if (sensor_packet.cmd == CMD_BLINK_OFF)
+            set_blink_state = 0;
+    }
+    clear_sensor_packet();
+}

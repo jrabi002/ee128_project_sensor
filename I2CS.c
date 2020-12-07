@@ -4,6 +4,8 @@
 volatile uint8_t i2c_data;        // data byte sent by slave or received from master
 uint8_t  num_bytes = 0;              // number of bytes sent/received in transaction
 
+
+
 void I2CS_init(void)                                            // initialize slave
 {
     //Clear and setup SCL
@@ -179,7 +181,7 @@ ISR(TWI0_TWIS_vect)
         if (sensor_packet.buffer[sensor_packet.buffer_count - 1]  == 0xFF)
         {
             sensor_packet.complete = 1;
-            PORTB.PIN2CTRL |= PORT_INVEN_bm;    //Trigger PC ISR
+            start_parse();
         }
       return;
     }

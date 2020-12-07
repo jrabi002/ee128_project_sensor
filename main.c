@@ -33,26 +33,6 @@ ISR(AC0_AC_vect)
     AC0.STATUS = AC_CMP_bm;
 }
 
-//This PC Int is triggered after an I2C Stop condition is issued
-ISR(PORTB_PORT_vect)
-{
-    //Reset PORTB[2] Pin inversion
-    PORTB.PIN2CTRL &= ~(PORT_INVEN_bm);
-    
-    parse_sensor_packet();
-    if (sensor_packet.reg == REG_BLINK_CMD)
-    {
-        if (sensor_packet.cmd == CMD_BLINK_ON)
-            set_blink_state = 1;
-        else if (sensor_packet.cmd == CMD_BLINK_OFF)
-            set_blink_state = 0;
-    }
-    clear_sensor_packet();
-    
-    //Clear ISR Flag
-    PORTB.INTFLAGS = PIN2_bm;
-}
-
 void AC_init(void)
 {   
     //AC POS Input - Disable digital input buffer
@@ -74,6 +54,8 @@ void AC_init(void)
     AC0.INTCTRL = AC_CMP_bm;
 }
 
+
+
 int main(void)
 {
     //CPU 10MHz
@@ -88,9 +70,6 @@ int main(void)
     //PORTB Enable Outputs
     PORTB.DIRSET = IR_EMITTER;
      
-    //PORTB PC ISR Setup
-    PORTB.PIN2CTRL = PORT_PULLUPEN_bm | PORT_ISC_FALLING_gc; 
-    
     //Initialize I2C Slave
     I2CS_init();
     //Initialize analog comparator
